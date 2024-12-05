@@ -29,14 +29,10 @@ function Filter() {
       name: taskData.name,
       schedule: cronExpression,
       email: taskData.email,
-      message: "This is Auto generated message", // you can customize this message
+      message: "This is Auto generated message",
       expiration: "",
     };
-
-    // Call the backend API to create the task
     const res = await createTask(newTask);
-    console.log("respo", res);
-
     if (res) {
       setTaskData({
         name: "",
@@ -47,10 +43,9 @@ function Filter() {
         month: "*",
         dayOfWeek: "*",
       }); // Clear the form data
-      setShowForm(false); // Close the modal
+      setShowForm(false);
     } else {
       console.error("Error creating task:", res.message);
-      // Handle error if needed (e.g., show error message to the user)
     }
   }
 
