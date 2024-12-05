@@ -190,7 +190,4 @@ The base URL for all API endpoints is:
   - Error (404 Not Found): Returns an error message if the task is not found.
 
 **Note:** Replace `https://cron-job-sheduler.onrender.com` with the actual URL where your API is hosted. Once you create formal API documentation, you can update this section with a link to that documentation.
-
-**Links:**
-
-- [Live Version](https://cron-frontend.vercel.app/)
+1

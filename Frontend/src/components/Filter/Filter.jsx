@@ -82,81 +82,93 @@ function Filter() {
 
       {/* Form Section */}
       {showForm && (
-        <div className="flex flex-col items-center gap-6 p-6 bg-gray-100 text-gray-800 w-full mt-6 rounded-lg shadow-lg">
-          <h3 className="text-2xl font-bold text-gray-700">Create Task</h3>
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50">
+          <div className="flex flex-col items-center gap-6 p-6 bg-white text-gray-800 w-full max-w-lg rounded-lg shadow-lg max-h-[90vh] overflow-y-auto">
+            <h3 className="text-2xl font-bold text-gray-700">Create Task</h3>
 
-          {/* Input Fields */}
-          {[
-            {
-              label: "Name",
-              name: "name",
-              type: "text",
-              placeholder: "Task Name",
-            },
-            {
-              label: "Email",
-              name: "email",
-              type: "email",
-              placeholder: "Notification Email",
-            },
-            {
-              label: "Minute (0-59)",
-              name: "minute",
-              type: "text",
-              placeholder: "*",
-            },
-            {
-              label: "Hour (0-23)",
-              name: "hour",
-              type: "text",
-              placeholder: "*",
-            },
-            {
-              label: "Day of Month (1-31)",
-              name: "dayOfMonth",
-              type: "text",
-              placeholder: "*",
-            },
-            {
-              label: "Month (1-12)",
-              name: "month",
-              type: "text",
-              placeholder: "*",
-            },
-            {
-              label: "Day of Week (0-6, Sun-Sat)",
-              name: "dayOfWeek",
-              type: "text",
-              placeholder: "*",
-            },
-          ].map(({ label, name, type, placeholder }) => (
-            <label key={name} className="flex flex-col w-full md:w-96 gap-1">
-              <span className="text-sm font-medium text-gray-600">{label}</span>
-              <input
-                type={type}
-                name={name}
-                placeholder={placeholder}
-                value={taskData[name]}
-                onChange={handleInputChange}
-                className="p-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-green-500 focus:outline-none"
-              />
-            </label>
-          ))}
+            {/* Input Fields */}
+            {[
+              {
+                label: "Task Name",
+                name: "name",
+                type: "text",
+                placeholder: "Enter task name",
+                helper: "A short descriptive name for the task.",
+              },
+              {
+                label: "Notification Email",
+                name: "email",
+                type: "email",
+                placeholder: "Enter email address",
+                helper: "Email where notifications will be sent.",
+              },
+              {
+                label: "Minute",
+                name: "minute",
+                type: "number",
+                placeholder: "0-59",
+                helper: "Specify the minute of execution (0-59).",
+              },
+              {
+                label: "Hour",
+                name: "hour",
+                type: "number",
+                placeholder: "0-23",
+                helper: "Specify the hour of execution (0-23).",
+              },
+              {
+                label: "Day of Month",
+                name: "dayOfMonth",
+                type: "number",
+                placeholder: "1-31",
+                helper: "Specify the day of the month (1-31).",
+              },
+              {
+                label: "Month",
+                name: "month",
+                type: "number",
+                placeholder: "1-12",
+                helper: "Specify the month (1-12).",
+              },
+              {
+                label: "Day of Week",
+                name: "dayOfWeek",
+                type: "text",
+                placeholder: "0-6 (Sun-Sat)",
+                helper: "Specify the day of the week (0-6 or Sun-Sat).",
+              },
+            ].map(({ label, name, type, placeholder, helper }) => (
+              <label key={name} className="flex flex-col w-full gap-1">
+                <span className="text-sm font-medium text-gray-600">
+                  {label}
+                </span>
+                <input
+                  type={type}
+                  name={name}
+                  placeholder={placeholder}
+                  value={taskData[name]}
+                  onChange={handleInputChange}
+                  className="p-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-green-500 focus:outline-none"
+                />
+                <span className="text-xs text-gray-500">{helper}</span>
+              </label>
+            ))}
 
-          {/* Buttons */}
-          <div className="flex gap-4">
-            <button
-              onClick={create}
-              className="px-4 py-2 bg-green-600 text-white rounded-md shadow-md hover:bg-green-500 transition"
-            >
-              Submit
-            </button>
-            <button
-              onClick={() => setShowForm(false)}
-              className="px-4 py-2 bg-red-500 text-white rounded-md shadow-md hover:bg-red-400 transition"
-            >
-              Close X
-            </button>
+            {/* Buttons */}
+            <div className="flex gap-4">
+              <button
+                onClick={create}
+                className="px-4 py-2 bg-green-600 text-white rounded-md shadow-md hover:bg-green-500 transition"
+              >
+                Submit
+              </button>
+              <button
+                onClick={() => setShowForm(false)}
+                className="px-4 py-2 bg-red-500 text-white rounded-md shadow-md hover:bg-red-400 transition"
+              >
+                Close X
+              </button>
+            </div>
           </div>
         </div>
       )}
