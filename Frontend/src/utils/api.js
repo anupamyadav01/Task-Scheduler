@@ -29,6 +29,8 @@ export const getTasks = async () => {
 
 export const updateTask = async (id, updates) => {
   try {
+    console.log("updates", updates);
+
     const response = await axios.put(`${API_URL}editTask`, updates);
     console.log(`Task ${id} updated successfully:`, {
       updates,
@@ -52,7 +54,7 @@ export const deleteTask = async (id) => {
     console.log(`Task ${id} deleted successfully:`, {
       response: response.data,
     });
-    return response.data;
+    return response.data; // Ensure the response is returned here
   } catch (error) {
     console.error(`Error deleting task ${id}:`, { error: error.message });
     throw error;

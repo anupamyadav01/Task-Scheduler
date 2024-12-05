@@ -3,9 +3,6 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-/**
- * Creates and configures the Nodemailer transporter using environment variables.
- */
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
@@ -14,30 +11,18 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-/**
- * Sends an email with the specified details.
- * @param {string} to - Recipient's email address.
- * @param {string} subject - Subject of the email.
- * @param {string} text - Plain text content of the email.
- * @param {string} [html] - Optional HTML content for the email.
- * @returns {Promise<Object>} - Resolves with the email response if successful.
- */
-export const sendEmail = async (to, subject, text, html = null) => {
+export const sendEmail = async (to, subject, text) => {
   try {
-    const mailOptions = {
+    const info = await transporter.sendMail({
       from: process.env.EMAIL_USER,
       to,
       subject,
       text,
-      ...(html && { html }), // Include HTML content if provided
-    };
-
-    const info = await transporter.sendMail(mailOptions);
-
-    console.log(`Email sent successfully to ${to}:`, info);
-    return info; // Return email sending response
+    });
+    console.log(`Email sent: ${info.response}`);
+    return info; // Optionally return the email info object
   } catch (error) {
-    console.error(`Failed to send email to ${to}:`, error.message);
-    throw new Error("Email sending failed. Please try again.");
+    console.error("Error sending email:", error);
+    throw new Error("Failed to send email"); // Propagate the error
   }
 };

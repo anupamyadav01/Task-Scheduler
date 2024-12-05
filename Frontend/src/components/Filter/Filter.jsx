@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { FaCloudDownloadAlt } from "react-icons/fa";
 import { IoFilterSharp } from "react-icons/io5";
-import { createTask } from "../../utils/api";
+import { createTask } from "../../utils/api"; // Ensure this function works as expected
 
 function Filter() {
   const [showForm, setShowForm] = useState(false);
@@ -29,12 +29,15 @@ function Filter() {
       name: taskData.name,
       schedule: cronExpression,
       email: taskData.email,
-      message: "This is Auto generated message",
+      message: "This is Auto generated message", // you can customize this message
       expiration: "",
     };
 
+    // Call the backend API to create the task
     const res = await createTask(newTask);
-    if (res.ok) {
+    console.log("respo", res);
+
+    if (res) {
       setTaskData({
         name: "",
         email: "",
@@ -43,8 +46,11 @@ function Filter() {
         dayOfMonth: "*",
         month: "*",
         dayOfWeek: "*",
-      });
-      setShowForm(false);
+      }); // Clear the form data
+      setShowForm(false); // Close the modal
+    } else {
+      console.error("Error creating task:", res.message);
+      // Handle error if needed (e.g., show error message to the user)
     }
   }
 
@@ -52,7 +58,6 @@ function Filter() {
     <div className="flex flex-col items-center">
       {/* Top Bar */}
       <div className="flex justify-between items-center p-4 bg-gradient-to-r from-gray-800 via-gray-700 to-gray-900 text-white w-full shadow-lg">
-        {/* Search Input */}
         <div className="w-full md:w-auto">
           <input
             type="text"
@@ -61,7 +66,6 @@ function Filter() {
           />
         </div>
 
-        {/* Action Buttons */}
         <div className="flex items-center gap-6">
           <button className="flex items-center gap-2 p-2 rounded-md bg-gray-700 hover:bg-gray-600 text-sm transition">
             <IoFilterSharp className="text-lg" />
@@ -86,8 +90,8 @@ function Filter() {
           <div className="flex flex-col items-center gap-6 p-6 bg-white text-gray-800 w-full max-w-lg rounded-lg shadow-lg max-h-[90vh] overflow-y-auto">
             <h3 className="text-2xl font-bold text-gray-700">Create Task</h3>
 
-            {/* Input Fields */}
             {[
+              /* Form fields */
               {
                 label: "Task Name",
                 name: "name",
@@ -137,7 +141,7 @@ function Filter() {
                 placeholder: "0-6 (Sun-Sat)",
                 helper: "Specify the day of the week (0-6 or Sun-Sat).",
               },
-            ].map(({ label, name, type, placeholder, helper }) => (
+            ].map(({ label, name, type, placeholder }) => (
               <label key={name} className="flex flex-col w-full gap-1">
                 <span className="text-sm font-medium text-gray-600">
                   {label}
@@ -150,11 +154,9 @@ function Filter() {
                   onChange={handleInputChange}
                   className="p-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-green-500 focus:outline-none"
                 />
-                <span className="text-xs text-gray-500">{helper}</span>
               </label>
             ))}
 
-            {/* Buttons */}
             <div className="flex gap-4">
               <button
                 onClick={create}

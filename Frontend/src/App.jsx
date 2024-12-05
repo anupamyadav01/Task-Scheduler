@@ -11,7 +11,6 @@ function App() {
       </header>
 
       {/* Main Content */}
-
       <section className="w-full">
         <Filter />
         <Table />

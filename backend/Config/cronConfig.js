@@ -7,9 +7,10 @@ import logger from "../Config/logger.js";
 export const scheduleTask = async (task) => {
   const job = cron.schedule(task.schedule, async () => {
     try {
+      // Send email when the task is executed
       await sendEmail(task.email, "Scheduled Task", task.message);
 
-      // Log successful execution
+      // Create and save task log with 'success' status
       const tasklog = new TaskLog({
         taskId: task.taskId,
         executedAt: new Date(),
@@ -17,6 +18,7 @@ export const scheduleTask = async (task) => {
       });
       await tasklog.save();
 
+      // Log task execution success
       logger.info(
         `Task ${
           task.name
@@ -27,13 +29,15 @@ export const scheduleTask = async (task) => {
         }
       );
     } catch (error) {
-      // Log failed execution
+      // Create and save task log with 'failure' status
       const tasklog = new TaskLog({
         taskId: task.taskId,
         executedAt: new Date(),
         status: "failure",
       });
       await tasklog.save();
+
+      // Log task execution failure
       logger.error(
         `Task ${task.name} failed at ${new Date().toLocaleString()}: ${
           error.message
@@ -47,16 +51,24 @@ export const scheduleTask = async (task) => {
     }
   });
 
+  // Start the cron job immediately
   job.start();
 };
-// Start all active tasks on server startup
+
+// Initialize all active tasks
 export const initializeTasks = async () => {
   try {
+    // Find all active tasks in the database
     const tasks = await Task.find({ status: "active" });
-    console.log("All the active taskes here ", tasks);
+    if (tasks.length === 0) {
+      logger.info("No active tasks found to initialize.");
+    }
+
+    // Schedule each active task
     tasks.forEach((task) => scheduleTask(task));
     logger.info("All active tasks initialized successfully.");
   } catch (error) {
+    // Log any errors during initialization
     logger.error("Error initializing tasks:", {
       error: error.message,
     });
